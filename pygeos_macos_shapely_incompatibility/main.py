@@ -4,10 +4,8 @@ Reproduce bug.
 import geopandas as gpd
 
 
-def clip_bug():
-    traces = gpd.read_file("KB11/KB11_traces.geojson")
-    area = gpd.read_file("KB11/KB11_area.geojson")
+def clip_bug(traces, area, keep_geom_type):
 
-    clipped = gpd.clip(traces, area)
+    clipped = gpd.clip(traces, area, keep_geom_type=keep_geom_type)
 
     return clipped

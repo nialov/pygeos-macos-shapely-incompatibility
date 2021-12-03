@@ -6,12 +6,15 @@ from pygeos_macos_shapely_incompatibility import main
 import geopandas as gpd
 import pytest
 from shapely.geometry import MultiPolygon, MultiLineString
+from shapely.affinity import translate
 
 TRACES = gpd.read_file("KB11/KB11_traces.geojson")
 AREA = gpd.read_file("KB11/KB11_area.geojson")
 
 MULTIPOLY = MultiPolygon([area for area in AREA.geometry.values])
-MULTIPOLY_TWICE = MultiPolygon([*MULTIPOLY.geoms, *MULTIPOLY.geoms])
+SHIFTED_MULTIPOLY = translate(MULTIPOLY, xoff=30)
+NEG_SHIFTED_MULTIPOLY = translate(MULTIPOLY, xoff=-30)
+MULTIPOLY_TWICE = MultiPolygon([*NEG_SHIFTED_MULTIPOLY.geoms, *SHIFTED_MULTIPOLY.geoms])
 MULTILINE_GDF = gpd.GeoDataFrame(
     geometry=[MultiLineString([trace for trace in TRACES.geometry.values])]
 )
